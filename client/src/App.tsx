@@ -27,7 +27,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:3000');
+    ws.current = new WebSocket('wss://' + window.location.host);
 
     ws.current.onopen = () => console.log('connected');
     ws.current.onclose = () => console.log('disconnected');
