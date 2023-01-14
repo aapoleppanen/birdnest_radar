@@ -1,45 +1,67 @@
 import { Drone, Pilot } from '../../types';
 import { format } from 'date-fns';
+import * as Tooltip from '@radix-ui/react-tooltip';
+import droneIcon from '../../assets/camera-drone.png';
+import './styles.css';
 
 type Props = {
   pilots: Pilot[];
-  setHoveredPilot: (pilot: Pilot | null) => void;
-  hoveredDrone: Drone | null;
+  drones: Drone[];
 };
 
-const PilotList = ({ pilots, setHoveredPilot, hoveredDrone }: Props) => {
+const PilotList = ({ pilots, drones }: Props) => {
   return (
-    <div className="overflow-x-auto overflow-y-scroll h-screen">
-      <table className="table table-compact w-full">
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Distance To nest</th>
-            <th>Time</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pilots.sort((a, b) => a.closestDistance > b.closestDistance ? 1 : -1).map((pilot) => (
-            <tr
-              key={pilot.pilotId}
-              onMouseEnter={() => setHoveredPilot(pilot)}
-              onMouseLeave={() => setHoveredPilot(null)}
-              className={hoveredDrone && hoveredDrone.serialNumber === pilot.droneSerialNumber ? 'active' : 'hover'}
-            >
-              <td>{pilot.firstName}</td>
-              <td>{pilot.lastName}</td>
-              <td>{`${Math.round(Number(pilot.closestDistance) / 10) / 10} m`}</td>
-              <td>{format(new Date(pilot.timeOfLastViolation), 'HH:mm')}</td>
-              <td>{pilot.email}</td>
-              <td>{pilot.phoneNumber}</td>
+    <Tooltip.Provider>
+      <div className="overflow-x-auto overflow-y-scroll h-full">
+        <table className="table table-compact w-full">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Closest <br />violation distance</th>
+              <th>Time</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Drone</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {pilots
+              .sort((a, b) => (a.timeOfLastViolation < b.timeOfLastViolation) ? 1 : (a.timeOfLastViolation === b.timeOfLastViolation ? (a.closestDistance < b.closestDistance ? 1 : -1) : -1))
+              .map((pilot) => (
+                <tr
+                  key={pilot.pilotId}
+                  className={`${drones.some(drone => drone.serialNumber === pilot.drone.serialNumber) ? '[&>td]:bg-red-500' : 'hover'}`}
+                >
+                  <td>{pilot.firstName}</td>
+                  <td>{pilot.lastName}</td>
+                  <td>{`${Math.round(Number(pilot.closestDistance) / 100) / 10} m`}</td>
+                  <td>{format(new Date(pilot.timeOfLastViolation), 'HH:mm')}</td>
+                  <td>{pilot.email}</td>
+                  <td>{pilot.phoneNumber}</td>
+                  <Tooltip.Root delayDuration={0} disableHoverableContent>
+                    <Tooltip.Trigger asChild>
+                      <td className="flex items-center justify-center cursor-pointer group">
+                        <img src={droneIcon} alt="" className='w-7 h-7 invert group-hover:opacity-50'/>
+                      </td>
+                    </Tooltip.Trigger>
+                    <Tooltip.Portal>
+                      <Tooltip.Content sideOffset={3} className="TooltipContent">
+                        <div className="bg-gray-700 p-2 rounded">
+                          <p>Serial Number: {pilot.drone.serialNumber}</p>
+                          <p>Model: {pilot.drone.model}</p>
+                          <p>Manufacturer: {pilot.drone.manufacturer}</p>
+                        </div>
+                        <Tooltip.Arrow className="TooltipArrow" />
+                      </Tooltip.Content>
+                    </Tooltip.Portal>
+                  </Tooltip.Root>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </Tooltip.Provider>
   );
 };
 

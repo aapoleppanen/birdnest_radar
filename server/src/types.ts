@@ -59,9 +59,9 @@ interface Pilot {
   phoneNumbers: string
   email: string
   createDt: string // date
-  droneSerialNumber?: string
   timeOfLastViolation?: string
   closestDistance?: number
+  drone: Drone
 }
 
 export { UrlPathOptions, DroneReport, Pilot, Drone };

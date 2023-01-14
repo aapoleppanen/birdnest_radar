@@ -17,10 +17,11 @@ const fetchPilot = async (serialNumber: string): Promise<Pilot | null> => {
 };
 
 const formatPilot = (pilot: Pilot, timestamp: string, drone: Drone): Required<Pilot> => {
-  const closestDistance = calculateDistanceToNest(drone);
-  const droneSerialNumber = drone.serialNumber;
+  let closestDistance = pilot.closestDistance;
+  const newDistance = calculateDistanceToNest(drone);
+  if (!closestDistance || closestDistance > calculateDistanceToNest(drone)) closestDistance = newDistance;
 
-  return { ...pilot, droneSerialNumber, timeOfLastViolation: timestamp, closestDistance };
+  return { ...pilot, timeOfLastViolation: timestamp, closestDistance, drone };
 };
 
 export { fetchPilot, formatPilot };

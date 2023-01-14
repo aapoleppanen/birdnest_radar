@@ -1,17 +1,14 @@
-import { Drone, Pilot } from '../../types';
-import DroneWithTooltip from './components/DroneWithTooltip';
+import { Drone } from '../../types';
 import './styles.css';
 
 type Props = {
   drones: Drone[];
-  setHoveredDrone: (drone: Drone | null) => void;
-  hoveredPilot: Pilot | null;
 };
 
-const DroneMap = ({ drones, setHoveredDrone, hoveredPilot }: Props) => {
+const DroneMap = ({ drones }: Props) => {
   return (
     <div
-      className="border rounded-full flex items-center justify-center overflow-hidden"
+      className="border rounded-full flex items-center justify-center overflow-hidden m-4"
       style={{
         width: '500px',
         height: '500px'
@@ -32,7 +29,7 @@ const DroneMap = ({ drones, setHoveredDrone, hoveredPilot }: Props) => {
               left: `${(Number(drone.positionY) - 250000) * 0.0025}px`
             }}
           >
-            <DroneWithTooltip drone={drone} setHoveredDrone={setHoveredDrone} hoveredPilot={hoveredPilot} />
+            <div className="w-3 h-3 bg-red-500 rounded-full" />
           </div>
         ))}
       </div>
