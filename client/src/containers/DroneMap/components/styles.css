@@ -1,0 +1,17 @@
+.TooltipContent {
+  animation: fadeIn ease 0.3s;
+}
+
+.TooltipArrow {
+  --tw-bg-opacity: 1;
+    fill: rgba(55, 65, 81, var(--tw-bg-opacity))
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
