@@ -56,7 +56,7 @@ interface Pilot {
   pilotId: string
   firstName: string
   lastName: string
-  phoneNumbers: string
+  phoneNumber: string
   email: string
   createDt: string // date
   timeOfLastViolation?: string

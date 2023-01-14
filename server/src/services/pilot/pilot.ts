@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import fetch from 'node-fetch';
 import config from '../../config/config';
 import { Drone, Pilot } from '../../types';
@@ -16,7 +17,7 @@ const fetchPilot = async (serialNumber: string): Promise<Pilot | null> => {
   }
 };
 
-const formatPilot = (pilot: Pilot, timestamp: string, drone: Drone): Required<Pilot> => {
+const formatPilot = (pilot: Omit<Pilot, 'drone'>, timestamp: string, drone: Drone): Required<Pilot> => {
   let closestDistance = pilot.closestDistance;
   const newDistance = calculateDistanceToNest(drone);
   if (!closestDistance || closestDistance > calculateDistanceToNest(drone)) closestDistance = newDistance;
@@ -24,4 +25,13 @@ const formatPilot = (pilot: Pilot, timestamp: string, drone: Drone): Required<Pi
   return { ...pilot, timeOfLastViolation: timestamp, closestDistance, drone };
 };
 
-export { fetchPilot, formatPilot };
+const generateUnknowPilot = (): Omit<Pilot, 'drone'> => ({
+  pilotId: `unknown:${randomUUID()}`,
+  firstName: 'Unknown',
+  lastName: 'Unknown',
+  phoneNumber: 'Unknown',
+  email: 'Unknown',
+  createDt: new Date().toISOString()
+});
+
+export { fetchPilot, formatPilot, generateUnknowPilot };

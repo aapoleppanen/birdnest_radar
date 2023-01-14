@@ -2,7 +2,7 @@ import { createClient } from 'redis';
 import config from '../../config/config';
 import { Pilot } from '../../types';
 import { fetchViolatingDrones } from '../drones/drones';
-import { fetchPilot, formatPilot } from '../pilot/pilot';
+import { fetchPilot, formatPilot, generateUnknowPilot } from '../pilot/pilot';
 import { sendDroneReport, sendPilot } from '../websocket/server';
 
 const client = createClient({
@@ -78,6 +78,11 @@ const updateDrones = async (): Promise<void> => {
         (await fetchPilot(drone.serialNumber));
       if (pilot) {
         const formattedPilot = formatPilot(pilot, newDrones.report.capture.$.snapshotTimestamp, drone);
+        sendPilot(formattedPilot);
+        void storePilot(formattedPilot);
+      } else {
+        const unknownPilot = generateUnknowPilot();
+        const formattedPilot = formatPilot(unknownPilot, newDrones.report.capture.$.snapshotTimestamp, drone);
         sendPilot(formattedPilot);
         void storePilot(formattedPilot);
       }
