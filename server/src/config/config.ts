@@ -1,6 +1,9 @@
 const PORT = process.env.PORT ?? 3000;
 const DRONE_POLL_INTERVAL = 2000;
-const REDIS_URI = process.env.REDIS_URI;
+const REDIS_URI =
+  process.env.NODE_ENV === 'production'
+    ? `redis://${process.env.REDIS_HOST ?? 'localhost'}:${process.env.REDIS_IP ?? '6379'}`
+    : process.env.REDIS_URI_DEV;
 const DRONE_API_URL = 'https://assignments.reaktor.com/birdnest/drones';
 const PILOT_API_URL = 'https://assignments.reaktor.com/birdnest/pilots/:serialNumber';
 const CACHE_TTL = 600000;
