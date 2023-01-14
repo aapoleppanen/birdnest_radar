@@ -1,4 +1,4 @@
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ?? 8080;
 const DRONE_POLL_INTERVAL = 2000;
 const REDIS_URI =
   process.env.NODE_ENV === 'production'
