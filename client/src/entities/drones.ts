@@ -8,7 +8,7 @@ export const useDrones = () => {
     const controller = new AbortController();
     const { signal } = controller;
 
-    const response = await fetch('http://localhost:3000/drones/cache', { signal });
+    const response = await fetch('/drones/cache', { signal });
 
     if (response.ok) {
       const drones = await response.json();

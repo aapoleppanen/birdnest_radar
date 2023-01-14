@@ -8,7 +8,7 @@ export const usePilots = () => {
     const controller = new AbortController();
     const { signal } = controller;
 
-    const response = await fetch('http://localhost:3000/pilots', { signal });
+    const response = await fetch('/pilots', { signal });
 
     if (response.ok) {
       const pilots = await response.json();
