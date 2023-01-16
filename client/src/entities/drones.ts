@@ -1,29 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Drone } from '../types';
+import { useState } from 'react';
+import { DeviceInformation, Drone, DroneReport } from '../types';
 
 export const useDrones = () => {
   const [drones, setDrones] = useState<Drone[]>([]);
+  const [deviceInformation, setDeviceInformation] = useState<DeviceInformation | null>(null);
 
-  const fetchDrones = async () => {
-    const controller = new AbortController();
-    const { signal } = controller;
+  const handleDroneReport = (report: DroneReport) => {
+    const { drone } = report.report.capture;
+    const { deviceInformation } = report.report;
 
-    const response = await fetch('/drones/cache', { signal });
-
-    if (response.ok) {
-      const drones = await response.json();
-
-      setDrones(drones);
-    }
-
-    return () => {
-      controller.abort();
-    };
+    setDrones(drone);
+    setDeviceInformation(deviceInformation);
   };
 
-  useEffect(() => {
-    fetchDrones();
-  }, []);
-
-  return [drones, setDrones] as const;
+  return [drones, deviceInformation, handleDroneReport] as const;
 };

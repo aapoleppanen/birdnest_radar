@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Pilot } from '../types';
+import { getOriginUrl } from './app/routingUtils';
 
 export const usePilots = () => {
   const [pilots, setPilots] = useState<Pilot[]>([]);
@@ -8,7 +9,7 @@ export const usePilots = () => {
     const controller = new AbortController();
     const { signal } = controller;
 
-    const response = await fetch('/pilots', { signal });
+    const response = await fetch(`${getOriginUrl()}/pilots`, { signal });
 
     if (response.ok) {
       const pilots = await response.json();

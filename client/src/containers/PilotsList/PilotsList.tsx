@@ -12,7 +12,7 @@ type Props = {
 const PilotList = ({ pilots, drones }: Props) => {
   return (
     <Tooltip.Provider>
-      <div className="overflow-x-auto overflow-y-scroll h-full">
+      <div className="overflow-x-auto lg:overflow-y-scroll h-full lg:h-screen w-full max-w-full">
         <table className="table table-compact w-full">
           <thead>
             <tr>

@@ -33,7 +33,7 @@ interface DroneCapture {
 
 interface DroneReport {
   report: {
-    deviceInformation: DeviceInformation[];
+    deviceInformation: DeviceInformation;
     capture: DroneCapture;
   };
 }
@@ -54,4 +54,4 @@ interface Pilot {
   drone: Drone;
 }
 
-export type { DroneReport, Pilot, Drone };
+export type { DroneReport, DeviceInformation, Pilot, Drone };
