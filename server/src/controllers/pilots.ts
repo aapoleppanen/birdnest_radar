@@ -3,10 +3,10 @@ import { getPilots } from '../services/cache/cache';
 
 const pilotsRouter = Router();
 
-pilotsRouter.get('/', (async (_req, res) => {
-  const pilots = await getPilots();
-
-  res.send(pilots);
+pilotsRouter.get('/', ((_req, res, next) => {
+  getPilots()
+    .then((pilots) => res.send(pilots))
+    .catch(next);
 }) as RequestHandler);
 
 export default pilotsRouter;

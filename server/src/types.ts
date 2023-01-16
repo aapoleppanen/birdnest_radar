@@ -12,7 +12,7 @@ interface UrlPathOptions {
 
 interface DroneReport {
   report: {
-    deviceInformation: DeviceInformation[]
+    deviceInformation: DeviceInformation
     capture: DroneCapture
   }
 
