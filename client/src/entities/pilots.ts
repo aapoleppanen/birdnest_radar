@@ -5,7 +5,7 @@ import { getOriginUrl } from './app/routingUtils';
 /**
  * Custom hook for handling pilot data
  * - fetches pilots on initial render
- * @returns pilots and setPilots function
+ * @returns pilots, setPilots, { fetchpilots }
  */
 export const usePilots = () => {
   const [pilots, setPilots] = useState<Pilot[]>([]);
@@ -31,7 +31,7 @@ export const usePilots = () => {
     fetchpilots();
   }, []);
 
-  return [pilots, setPilots] as const;
+  return [pilots, setPilots, { fetchpilots }] as const;
 };
 
 /**

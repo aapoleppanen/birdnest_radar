@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import DeviceInfo from './containers/DeviceInfo/DeviceInfo';
 import DroneMap from './containers/DroneMap/DroneMap';
 import PilotList from './containers/PilotsList/PilotsList';
@@ -9,7 +10,7 @@ import { DroneReport, Pilot } from './types';
 
 const App = () => {
   const [drones, deviceInformation, handleDroneReport] = useDrones();
-  const [pilots, setPilots] = usePilots();
+  const [pilots, setPilots, { fetchpilots }] = usePilots();
 
   const handleUpdate = (event: MessageEvent<any>) => {
     const data: DroneReport | Pilot = JSON.parse(event.data);
@@ -35,6 +36,12 @@ const App = () => {
   const { connect, status } = useWebSocket({ onMessage: handleUpdate });
 
   useInterval(connect, status === WebSocket.CLOSED ? 1000 : null);
+
+  useEffect(() => {
+    // fetch pilots when status changes
+    // this is to avoid stale state if websocket disconnects and reconnects
+    if (status === WebSocket.OPEN) (async () => await fetchpilots())();
+  }, [status]);
 
   return (
     <div className="flex flex-col h-screen w-screen max-w-full">
