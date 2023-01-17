@@ -1,3 +1,6 @@
+/**
+ * In development, returns the URL of the local server.
+ */
 export const getOriginUrl = () => {
   if (import.meta.env.DEV) {
     return 'http://localhost:8080';

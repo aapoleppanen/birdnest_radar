@@ -9,6 +9,7 @@ const fetchViolatingDrones = async (): Promise<DroneReport | null> => {
     const dronesXMLstring = await dronesResponse.text();
     const droneReport: DroneReport = await xml2js.parseStringPromise(dronesXMLstring, { explicitArray: false });
 
+    // Filter out drones that are not violating the NDZ
     const violatingDrones = droneReport.report.capture.drone.filter(
       (drone) => calculateDistanceToNest(drone) < config.NDZ_RADIUS
     );

@@ -14,6 +14,7 @@ const client = createClient({
 client.on('connect', () => {
   console.log('Redis client connected');
 
+  // Update poll interval on startup, based on the latest drone report
   const updatePollInterval = async (): Promise<void> => {
     const data = await fetchViolatingDrones();
     if (data?.report) pollInterval = Number(data.report.deviceInformation.updateIntervalMs) ?? pollInterval;
@@ -23,6 +24,7 @@ client.on('connect', () => {
     .then(() => {
       console.log(`Poll interval set to ${pollInterval}ms`);
     })
+    // if the update fails, use the default poll interval
     .finally(() => {
       setInterval(() => {
         void updateDrones();
@@ -45,12 +47,15 @@ export const getPilots = async (): Promise<Pilot[]> => {
 
 const storePilot = async (pilot: Required<Pilot>): Promise<boolean> => {
   await client.set(pilot.pilotId, JSON.stringify(pilot));
+  // Use a sorted set to keep track of the pilots, expired keys can be removed
+  // the score is the timestamp when the pilot was added
   await client.zAdd('pilots', { score: new Date().getTime(), value: pilot.pilotId });
 
   return true;
 };
 
 const removeExpiredKeys = async (): Promise<boolean> => {
+  // Get all pilot ids that have expired based on score
   const expiredPilotIds = await client.zRangeByScore('pilots', '-inf', new Date().getTime() - config.CACHE_TTL);
   if (expiredPilotIds.length) {
     await client.del(expiredPilotIds);
@@ -71,11 +76,13 @@ const updateDrones = async (): Promise<void> => {
       const pilots = await getPilots();
 
       for (const drone of newDrones.report.capture.drone) {
+        // Check if the pilot is already in the cache, otherwise fetch it from the API
         const pilot =
         pilots.find((pilot) => pilot.drone.serialNumber === drone.serialNumber) ??
         (await fetchPilot(drone.serialNumber));
 
         const formattedPilot = formatPilot(
+          // If the pilot is not found at all, generate an unknown pilot
           pilot ?? generateUnknowPilot(),
           newDrones.report.capture.$.snapshotTimestamp,
           drone

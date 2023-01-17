@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { DeviceInformation, Drone, DroneReport } from '../types';
 
+/**
+ * Custom hook for handling drone data
+ * @returns drones, device information and a function for handling drone report
+ */
 export const useDrones = () => {
   const [drones, setDrones] = useState<Drone[]>([]);
   const [deviceInformation, setDeviceInformation] = useState<DeviceInformation | null>(null);

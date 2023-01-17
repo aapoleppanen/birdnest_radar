@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { Pilot } from '../types';
 import { getOriginUrl } from './app/routingUtils';
 
+/**
+ * Custom hook for handling pilot data
+ * - fetches pilots on initial render
+ * @returns pilots and setPilots function
+ */
 export const usePilots = () => {
   const [pilots, setPilots] = useState<Pilot[]>([]);
 
@@ -29,6 +34,10 @@ export const usePilots = () => {
   return [pilots, setPilots] as const;
 };
 
+/**
+ * Sorts pilots by time of last violation
+ * - If time of last violation is the same, sort by closest distance
+ */
 export const sortPilots = (pilots: Pilot[]) =>
   pilots.sort((a, b) =>
     new Date(a.timeOfLastViolation).getTime() < new Date(b.timeOfLastViolation).getTime()

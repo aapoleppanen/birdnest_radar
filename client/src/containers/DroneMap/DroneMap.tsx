@@ -24,6 +24,7 @@ const DroneMap = ({ drones }: Props) => {
             key={drone.serialNumber}
             className="-translate-x-1/2 -translate-y-1/2"
             style={{
+              // Map the drone position to the map using absolute positioning
               position: 'absolute',
               top: `${(Number(drone.positionY) - 250000) * 0.0025}px`,
               left: `${(Number(drone.positionX) - 250000) * 0.0025}px`

@@ -5,18 +5,16 @@ type Props = {
   onMessage: (message: MessageEvent<any>) => void;
 }
 
+/**
+ * Custom hook for handling WebSocket connection
+ * @param onMessage callback on message
+ * @returns connect function and socket status
+ */
 const useWebSocket = ({ onMessage }: Props) => {
   const ws = useRef<WebSocket | null>(null);
   const [status, setStatus] = useState(WebSocket.CLOSED);
 
-  useEffect(() => {
-    connect();
-
-    return () => ws.current?.close();
-  }, []);
-
   const connect = () => {
-    console.log('connect called');
     if (ws.current?.readyState === WebSocket.OPEN) return;
 
     ws.current = new WebSocket(getWebsocketUrl());
@@ -35,6 +33,13 @@ const useWebSocket = ({ onMessage }: Props) => {
 
     ws.current.onmessage = onMessage;
   };
+
+  useEffect(() => {
+    connect();
+
+    // close the connection when the component unmounts
+    return () => ws.current?.close();
+  }, []);
 
   return { connect, status };
 };

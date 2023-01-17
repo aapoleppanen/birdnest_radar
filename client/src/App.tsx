@@ -15,6 +15,7 @@ const App = () => {
     const data: DroneReport | Pilot = JSON.parse(event.data);
 
     if ('pilotId' in data) {
+      // Use setStateAction callback to avoid stale state
       setPilots((pilots) => {
         const pilotIndex = pilots.findIndex((pilot) => pilot.pilotId === data.pilotId);
 

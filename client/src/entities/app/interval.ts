@@ -1,5 +1,10 @@
 import { useEffect, useRef } from 'react';
 
+/**
+ * Custom hook for calling a function at a specified interval
+ * @param callback function to be called
+ * @param delay interval in milliseconds, null to stop the interval
+ */
 export const useInterval = (callback: () => void, delay: number | null) => {
   const savedCallback = useRef(callback);
 

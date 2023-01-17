@@ -17,6 +17,9 @@ const fetchPilot = async (serialNumber: string): Promise<Pilot | null> => {
   }
 };
 
+/**
+ * Format the pilot object to include the drone and the timestamp of the last violation
+ */
 const formatPilot = (pilot: Omit<Pilot, 'drone'>, timestamp: string, drone: Drone): Required<Pilot> => {
   let closestDistance = pilot.closestDistance;
   const newDistance = calculateDistanceToNest(drone);
@@ -25,6 +28,9 @@ const formatPilot = (pilot: Omit<Pilot, 'drone'>, timestamp: string, drone: Dron
   return { ...pilot, timeOfLastViolation: timestamp, closestDistance, drone };
 };
 
+/**
+ * Generate a pilot object with unknown information
+ */
 const generateUnknowPilot = (): Omit<Pilot, 'drone'> => ({
   pilotId: `unknown:${randomUUID()}`,
   firstName: 'Unknown',

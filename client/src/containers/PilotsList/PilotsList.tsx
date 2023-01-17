@@ -34,6 +34,8 @@ const PilotList = ({ pilots, drones }: Props) => {
               <tr
                 key={pilot.pilotId}
                 className={`${
+                  // If the pilot has a drone that is in currently in the NDZ, highlight the row
+                  // otherwise highlight on hover
                   drones.some((drone) => drone.serialNumber === pilot.drone.serialNumber)
                     ? '[&>td]:bg-red-500'
                     : 'hover'
