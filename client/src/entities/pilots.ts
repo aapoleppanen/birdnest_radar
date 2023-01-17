@@ -28,3 +28,14 @@ export const usePilots = () => {
 
   return [pilots, setPilots] as const;
 };
+
+export const sortPilots = (pilots: Pilot[]) =>
+  pilots.sort((a, b) =>
+    new Date(a.timeOfLastViolation).getTime() < new Date(b.timeOfLastViolation).getTime()
+      ? 1
+      : a.timeOfLastViolation === b.timeOfLastViolation
+        ? a.closestDistance > b.closestDistance
+          ? 1
+          : -1
+        : -1
+  );

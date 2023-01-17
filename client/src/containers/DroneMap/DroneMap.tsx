@@ -25,8 +25,8 @@ const DroneMap = ({ drones }: Props) => {
             className="-translate-x-1/2 -translate-y-1/2"
             style={{
               position: 'absolute',
-              top: `${(Number(drone.positionX) - 250000) * 0.0025}px`,
-              left: `${(Number(drone.positionY) - 250000) * 0.0025}px`
+              top: `${(Number(drone.positionY) - 250000) * 0.0025}px`,
+              left: `${(Number(drone.positionX) - 250000) * 0.0025}px`
             }}
           >
             <div className="w-3 h-3 bg-red-500 rounded-full" />

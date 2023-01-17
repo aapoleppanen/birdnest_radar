@@ -4,10 +4,7 @@ type Props = {
   deviceInformation: DeviceInformation | null;
 }
 
-const DeviceInfo = ({ deviceInformation }: Props) => {
-  if (!deviceInformation) return <></>;
-
-  return (
+const DeviceInfo = ({ deviceInformation }: Props) => (
     <div className="flex flex-col items-center justify-center">
       <div>
         {`Radar started: ${deviceInformation && new Date(deviceInformation.deviceStarted).toLocaleString()}`}
@@ -19,7 +16,6 @@ const DeviceInfo = ({ deviceInformation }: Props) => {
         {`Update Interval: ${deviceInformation && Math.floor(Number(deviceInformation.updateIntervalMs) / 1000)} seconds`}
       </div>
     </div>
-  );
-};
+);
 
 export default DeviceInfo;
