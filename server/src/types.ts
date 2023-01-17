@@ -10,12 +10,17 @@ interface UrlPathOptions {
  * Drones
  */
 
-interface DroneReport {
-  report: {
-    deviceInformation: DeviceInformation
-    capture: DroneCapture
-  }
-
+interface Drone {
+  serialNumber: string
+  model: string
+  manufacturer: string
+  mac: string
+  ipv4: string
+  ipv6: string
+  firmware: string
+  positionY: string
+  positionX: string
+  altitude: string
 }
 
 interface DeviceInformation {
@@ -35,17 +40,12 @@ interface DroneCapture {
   drone: Drone[]
 }
 
-interface Drone {
-  serialNumber: string
-  model: string
-  manufacturer: string
-  mac: string
-  ipv4: string
-  ipv6: string
-  firmware: string
-  positionY: string
-  positionX: string
-  altitude: string
+interface DroneReport {
+  report: {
+    deviceInformation: DeviceInformation
+    capture: DroneCapture
+  }
+
 }
 
 /**
