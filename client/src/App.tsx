@@ -1,6 +1,7 @@
 import DeviceInfo from './containers/DeviceInfo/DeviceInfo';
 import DroneMap from './containers/DroneMap/DroneMap';
 import PilotList from './containers/PilotsList/PilotsList';
+import { useInterval } from './entities/app/interval';
 import { useDrones } from './entities/drones';
 import { usePilots } from './entities/pilots';
 import useWebSocket from './entities/websocket';
@@ -32,6 +33,8 @@ const App = () => {
 
   const { connect, status } = useWebSocket({ onMessage: handleUpdate });
 
+  useInterval(connect, status === WebSocket.CLOSED ? 1000 : null);
+
   return (
     <div className="flex flex-col h-screen w-screen max-w-full">
       <div className="flex justify-between bg-gray-800 border border-bottom border-gray-900">
@@ -60,9 +63,7 @@ const App = () => {
             {status === WebSocket.CLOSED && (
               <div className="mx-6">
                 <div className="mb-1">Radar Disconnected</div>
-                <button className="btn btn-error btn-sm" onClick={connect}>
-                  Reconnect
-                </button>
+                <div className="text-xs">Attempting to reconnect...</div>
               </div>
             )}
           </div>

@@ -16,6 +16,7 @@ const useWebSocket = ({ onMessage }: Props) => {
   }, []);
 
   const connect = () => {
+    console.log('connect called');
     if (ws.current?.readyState === WebSocket.OPEN) return;
 
     ws.current = new WebSocket(getWebsocketUrl());
